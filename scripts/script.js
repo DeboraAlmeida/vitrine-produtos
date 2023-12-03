@@ -8,15 +8,14 @@ const products = []
 
 const showResult = async (res) => {
   const allProducts = res
-  for (let i = 0; i < allProducts.length; i++) {
+  for (let i = 0; i < allProducts.length; i++) { 
     const oneProduct = await getProduct(res[i].productId)
-    console.log(oneProduct)
-    /* const oneProduct = getProduct(res[i].productId)
-    const images = getArrayItems(oneProduct)
-    console.log(oneProduct) */
+    const urlArray = oneProduct.map(item => {
+      return `<img class='smallImg' src=${item.imageUrl} onclick=setImg('${item.imageUrl}',${i}) >`
+    })
     const bestPrice = allProducts[i].bestPrice.toString()
     const listPrice = allProducts[i].listPrice.toString()
-    vitrine.innerHTML += `<div class='produto'><img class='productImg' src='${allProducts[i].image}'><div class='imgBox'>${oneProduct.map((item) => `<img class='smallImg' src=${item.imageUrl} >`)}</div><p class='productName'>${allProducts[i].productName}</p><div class='priceBox'><p class=${allProducts[i].listPrice !== allProducts[i].bestPrice ? 'productListPrice' : 'hide'}>R$ ${listPrice.substring(0, 2) + ',' + listPrice.substring(2)}</p></div><p class='productBestPrice'>R$ ${bestPrice.substring(0, 2) + ',' + bestPrice.substring(2)}</p><button class='buyButton'>COMPRAR</button></div>`
+    vitrine.innerHTML += `<div class='produto'><img id='productImg-${i}' class='productImg' src='${allProducts[i].image}'><div class='imgBox'>${urlArray}</div><p class='productName'>${allProducts[i].productName}</p><div class='priceBox'><p class=${allProducts[i].listPrice !== allProducts[i].bestPrice ? 'productListPrice' : 'hide'}>R$ ${listPrice.substring(0, 2) + ',' + listPrice.substring(2)}</p></div><p class='productBestPrice'>R$ ${bestPrice.substring(0, 2) + ',' + bestPrice.substring(2)}</p><button class='buyButton'>COMPRAR</button></div>`
   }
 }
 
@@ -28,7 +27,6 @@ const getArrayItems = async (res) => {
         images.push(arr[j].images[l])
       }
     }
-    /* console.log('na function', images[0].imageUrl) */
     return images
 }
 
@@ -67,11 +65,6 @@ const getProduct = async (id) => {
       if (response.ok) {
         const result = await response.json()
         return getArrayItems(result.items)
-        /* const images = []
-        for (let i = 0; i < result.items.length; i++) {
-          images.push(result.items[i].images)
-        }
-        return images */
       }
   } catch (error) {
       console.log(error)
@@ -79,27 +72,6 @@ const getProduct = async (id) => {
   }
 }
 
-
-/* const products = getProducts()
-console.log(products)
- */
-/* const getProducts = () => {
-  products = fetch('https://desafio.xlow.com.br/search')
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(error => console.log(error))
-    .finally(() => console.log('Finish'))
- }
- 
-  getProducts() */
-
-  // console.log('Produtos: ', products)
-
-/* fetch('https://desafio.xlow.com.br/search')
-.then(response => {
-  if(!response.ok) {
-    throw new Error('Erro na requisição')
-  }
-  console.log(response.json())
-  return response.json()
-}) */
+const setImg = (url, index) => {
+  document.getElementById(`productImg-${index}`).src=url
+}
