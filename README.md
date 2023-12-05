@@ -1,4 +1,4 @@
-# Vitrine-xlow
+# Vitrine-produtos
 Desafio: construir de uma vitrine de produtos responsiva a partir do consumo de uma API utilizando somente HTML, CSS e JavaScript.
 
 ## Sobre o projeto
